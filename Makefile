@@ -11,35 +11,23 @@ default:
 	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
 load:
 	insmod mcs9865.ko
+	insmod mcs9865-isa.ko
+
 unload:
+	rmmod mcs9865-isa
 	rmmod mcs9865
 
+DEST=/lib/modules/$(shell uname -r)/kernel/drivers/tty/serial
 install:
-	cp mcs9865.ko mcs9865-isa.ko /lib/modules/$(shell uname -r)/kernel/drivers/serial/
+	mkdir -p $(DEST)
+	cp mcs9865.ko mcs9865-isa.ko $(DEST)
 	depmod -A
-	chmod +x mcs9865
-	cp mcs9865 /etc/init.d/
-ifeq ($(DEBIAN_DISTRO), $(DEBIAN_VERSION_FILE))
-	ln -s /etc/init.d/mcs9865 /etc/rcS.d/S99mcs9865 || true
-else
-	ln -s /etc/init.d/mcs9865 /etc/rc3.d/S99mcs9865 || true  	
-	ln -s /etc/init.d/mcs9865 /etc/rc5.d/S99mcs9865 || true
-endif
-	modprobe mcs9865
-	modprobe mcs9865-isa	
 
 uninstall:
 	modprobe -r mcs9865
 	modprobe -r mcs9865-isa
-	rm /lib/modules/$(shell uname -r)/kernel/drivers/serial/mcs9865*
+	rm $(DEST)/mcs9865*
 	depmod -A
-	rm -f /etc/init.d/mcs9865
-ifeq ($(DEBIAN_DISTRO), $(DEBIAN_VERSION_FILE))
-	rm -f /etc/rcS.d/S99mcs9865
-else
-	rm -f /etc/rc3.d/S99mcs9865
-	rm -f /etc/rc5.d/S99mcs9865
-endif
 
 clean:
 	$(RM) *.mod.c *.o *.ko .*.cmd *.symvers *.order *.markers
