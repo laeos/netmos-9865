@@ -1,0 +1,86 @@
+   				Release notes for MCS9865 serial
+Version 1.0.0.12
+----------------
+10-03-2011
+1) Makefile is modified in giving the softlink name for the script 'mcs9865'.
+   Followed as the Debian/Fedora policy.
+2) No change in driver source.
+
+Version 1.0.0.11
+----------------
+23-02-2011
+1) Makefile is modified.
+   - Added conditional check to support debian distribution, in creating
+     soft symbolic links to /etc/rcS.d/.
+   - This also works for fedora as usual.
+2) No change in driver source.
+3) Base version taken Version 1.0.0.10.
+    
+Version 1.0.0.10
+----------------
+17-12-10
+
+1) Added support upto Linux kernel 2.6.36
+2) No change in driver source.
+3) Modified readme file: given user information to support driver on kernels
+   from v2.6.34 to v2.6.36.
+
+Version 1.0.0.9
+---------------
+18-05-10
+
+Added support upto Linux kernel 2.6.33.
+
+Version 1.0.0.8
+---------------
+Backward compatible with linux-2.6.18 for the support setserial application.
+
+Version 1.0.0.7
+---------------
+Bug resolved for setserial application when using autoconfig option.
+
+Version 1.0.0.6
+----------------
+Date 12-10-2009
+
+Added support upto 2.6.31 kernels.
+
+Version 1.0.0.5
+---------------
+Date 18-03-2009
+
+Added backward compatibility support for 2.6.14 kernel.
+
+Version 1.0.0.4
+---------------
+Date 21-01-2009
+
+Added support for 2.6.24 and 2.6.25 kernels.
+
+Version 1.0.0.3
+-------------
+Date 08-01-2009
+
+Bugs fixed:
+Added support for different ISA combinations.
+
+Version 1.0.0.2
+-------------
+Date 6-11-2008
+
+Bugs fixed:
+Fixed Baud rate setting issue when changed from higher to lower baudrate
+
+
+
+Version 1.0.0.0
+-------------
+Date 18-4-2008
+
+1. Initial version
+
+Tested 
+1. Differrent BAUD rates, file transfers.
+
+
+

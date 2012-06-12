@@ -1,0 +1,31 @@
+		Installation guide for MCS 9865 type devices
+			---------------------------------------------
+		
+Installing the Driver for kernel versions <=2.6.17
+---------------------------------------------------
+“make install” is the command to install the driver from the driver directory.
+
+Installing the Driver for kernel versions >2.6.17
+---------------------------------------------------
+Make sure whether the standard uart driver(CONFIG_SERIAL_8250) is compiled as a module(=m) or inbuilt(=y). This can be seen in .config file of corresponding kernel directory(/usr/src/linux-2.6.XX).
+
+If the standard uart driver is inbuilt then the following steps to install driver:
+	
+	1.Go to /etc/grub.conf and modify the line at the current kernel
+		kernel /vmlinuz-2.6.xx ro root=LABEL=/ 8250.nr_uarts=8
+	2.Now reboot the system and go to driver directory.
+	3.“make install” is the command to install the serial driver.
+
+If the standard uart driver is loaded as a module then the following steps to install driver:
+	
+	1.Unload the standard driver and the drivers using standard driver by using the command “rmmod”.
+	For Example 8250_pci uses the standard driver 8250.
+	So first unload the 8250_pci driver and then unload 8250 driver by using the commands
+	rmmod 8250_pci
+	rmmod 8250
+	2.Load the standard uart driver with following options
+	insmod /lib/modules/2.6.XX/kernel/drivers/serial/8250.ko nr_uarts=8
+	or
+	modprobe 8250 nr_uarts=8	
+	3.Now go to serial driver and compile it using “make” install it using “insmod mcs9865-isa.ko”.
+

@@ -1,0 +1,13 @@
+Serialports tested with minicom application
+
+	port0		port1		Baudrate	Mode
+
+	22095		22079		230400		7E1
+	11063		11056		115200		8N1
+	5036		5034		57600		6M2
+	213		210		2400		7O2
+
+Note: 
+1.Above values are in Bps.
+2. Tested on 2.6.31 and 2.6.33 kernel only
+

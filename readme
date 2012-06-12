@@ -1,0 +1,145 @@
+The Following files will be there with the tar of the Driver:
+
+	mcs9865.c
+	mcs9865.h
+	mcs9865-isa.c
+	mcs9865-isa.h
+	Makefile
+	README	
+	mcs9865
+
+Building the Driver:
+--------------------
+  Change to the folder with the Starex source files. And run the following Command:
+	$ make
+
+  Once the driver is compliles the loadable module mcs9865.ko will be created in the same folder.
+
+	**  '$' --this symbol represent the shell prompt on linux			
+
+To build driver on kernels from v2.6.34 till latest:
+----------------------------------------------------
+  Since the device ID 9865 is included (as built-in) with kernel versions
+    starts from v2.6.34 and above, the following procedure is required to
+    follow to detect MCS9865 devices.
+
+  a) Go to the path,
+        "/usr/src/kernels/linux-x.y.z/drivers/serial"
+        $ cd /usr/src/kernels/linux-x.y.z/drivers/serial/
+
+  b) Open file "8250_pci.c".
+    - find for the macro PCI_DEVICE_ID_NETMOS_9865.  It will be found in two places,
+        1) In the struct definition "serial_pci_tbl[]"
+          - Comment the below lines,
+
+        "
+                {       PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
+                        0xA000, 0x1000,
+                        0, 0, pbn_b0_1_115200 },
+
+                {       PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
+                        0xA000, 0x3004,
+                        0, 0, pbn_b0_bt_4_115200 },
+        "
+
+        2) In the routine "pci_netmos_init"
+          - No need do any action, as we already done (a).
+
+Loading the Driver:
+-------------------
+	
+  To load the driver use the following command:
+	$ insmod mcs9865.ko
+	$ insmod mcs9865-isa.ko
+
+**  '$' --this symbol represent the shell prompt on linux			
+
+Unloading the Driver:
+---------------------
+
+  To unload the driver use the following command:
+	$rmmod mcs9865
+	$rmmod mcs9865-isa
+
+**  '$' --this symbol represent the shell prompt on linux			
+
+Installing the Driver:
+----------------------
+  To install the driver use the following command:
+		
+	make install
+
+Uninstalling the Driver:
+------------------------
+
+  To un-install the driver use the following command:
+		
+	make uninstall
+
+Note: only baud rates upto 3.0Mbps are implemented in the current driver.
+	
+Feature Configuration:
+----------------------
+
+  This driver comes with a static array uart_9865_contxts[ ] for all the 16 ports features in the 9865.c file.
+  Where u can set the features like:
+	-DMA in RX
+	-DMA in TX
+	-enable/disable Flow control
+	-Flow control type
+	-RX fifo trigger level
+	-TX fifo trigger level
+	-x-on character
+	-x-off character
+
+  An example array setting for PORT 0 which will be recognised as /dev/ttyD0:			
+
+  //Port 0	--**This represents that this setting is for port 0 which will be recognised as /dev/ttyD0
+  {
+	.rx_dma_en	= 0,
+	.tx_dma_en	= 0,
+	.uart_mode	= MCS9865_RS232_MODE,
+	.en_flow_control	= 0,
+	.flow_ctrl_type 	= MCS9865_XON_XOFF_HW_FLOWCONTROL,
+	.rxfifotrigger	= 64,
+	.txfifotrigger	= 64,		
+	.x_on		= SERIAL_DEF_XON,
+	.x_off		= SERIAL_DEF_XOFF,
+  },
+
+	To change it to different modes like RS232 and RS422, we have to fille the .uart_mode with corresponding //UART mode defined in header files. for example for setting it to RS422 mode, we have to fill .uart_mode=MCS9865_RS422_MODE.
+
+
+Kernels:
+--------
+  This driver is currently developed and tested on 2.6.11 linux kernel and above 	
+
+Limitations:
+------------
+  This driver supports a maximum of 16 serial devices. This can be modified as required		
+
+Steps for setting parallel port :	
+---------------------------------
+  1. rmmod lp
+  2. rmmod parport_pc
+  2. insmod /usr/lib/modules/2.6.15/kernel/drivers/parport/parport_pc io=0xb000 irq=10.
+
+Note: Here, the io and irq should be noted from lspci -v.
+
+Steps for setting serial isa combinatios:
+-----------------------------------------
+  1.Setting ISA 4 serial combination:
+  ------------------------------------
+	1.Go to mcs9865-isa.c file and go to the functon "struct pci_device_id".
+ 	2.Make comments to all other ISA combinations other than ISA 4 serial.
+
+similarly for other ISA combinations.
+
+PCI_SUBVEN_ID_9865_4S represents ISA 4 serial.
+PCI_SUBVEN_ID_9865_3S represents ISA 3 serial.
+PCI_SUBVEN_ID_9865_2S represents ISA 2 serial.
+PCI_SUBVEN_ID_9865_1S represents ISA 1 serial.
+PCI_SUBVEN_ID_9865_2P represents ISA 2 parallel.
+PCI_SUBVEN_ID_9865_1S1P represents ISA 1 serial 1 parallel.
+PCI_SUBVEN_ID_9865_2S1P represents ISA 2 serial 1 parallel.
+		 
