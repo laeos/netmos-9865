@@ -27,7 +27,6 @@
 #include <linux/pci.h>
 #include <linux/console.h>
 #include <linux/sysrq.h>
-#include <linux/mca.h>
 #include <linux/sched.h>
 #include <linux/string.h>
 #include <linux/kernel.h>
@@ -1990,7 +1989,7 @@ int serial9865_match_port(struct uart_port *port1, struct uart_port *port2)
 		return 0;
 }
 
-static DECLARE_MUTEX(serial9865_sem);
+static DEFINE_SEMAPHORE(serial9865_sem);
 
 static struct uart_driver mcs9865_serial_driver = {
         .owner                  = THIS_MODULE,
