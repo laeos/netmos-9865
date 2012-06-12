@@ -1,0 +1,9 @@
+*.swp
+*.cmd
+*.ko
+*.o
+.tmp_versions/
+Module.symvers
+mcs9865-isa.mod.c
+mcs9865.mod.c
+modules.order
